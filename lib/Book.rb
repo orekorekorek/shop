@@ -1,5 +1,5 @@
 class Book < Product
-  attr_accessor :title, :author, :genre
+  attr_accessor :title, :author, :genre, :price, :amount
 
   def initialize(params)
     super
@@ -21,12 +21,12 @@ class Book < Product
 
   def self.from_file(file_path)
     book_info = File.readlines(file_path, chomp: true)
-    Book.new(
+    new(
       title: book_info[0],
       genre: book_info[1],
       author: book_info[2],
-      price: book_info[3],
-      amount: book_info[4]
+      price: book_info[3].to_i,
+      amount: book_info[4].to_i
     )
   end
 end

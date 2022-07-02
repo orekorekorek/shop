@@ -1,5 +1,5 @@
-class Movie < Product
-  attr_accessor :title, :year, :producer
+class Film < Product
+  attr_accessor :title, :year, :producer, :price, :amount
 
   def initialize(params)
     super
@@ -21,12 +21,12 @@ class Movie < Product
 
   def self.from_file(file_path)
     movie_info = File.readlines(file_path, chomp: true)
-    Movie.new(
+    new(
       title: movie_info[0],
       producer: movie_info[1],
       year: movie_info[2],
-      price: movie_info[3],
-      amount: movie_info[4]
+      price: movie_info[3].to_i,
+      amount: movie_info[4].to_i
     )
   end
 end

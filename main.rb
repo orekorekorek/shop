@@ -1,40 +1,52 @@
 require_relative "lib/Product"
-require_relative "lib/Movie"
+require_relative "lib/Film"
 require_relative "lib/Book"
+require_relative "lib/Disk"
+require_relative "lib/ProductCollection"
 
-products = []
+collection = ProductCollection.from_dir("#{__dir__}/data")
+collection.sort!(by: :title, order: :asc)
 
-leon = Movie.new(price: 290, amount: 10, title: "Леон", year: 1994, producer: "Люк Бессон")
-leon.producer = "Л. Бессон"
-leon.price = 990
-igla = Movie.new(title: "Игла", year: 1988, producer: "Р. М. Нугманов", price: 250, amount: 3)
-igla.update(price: 990, amount: 2)
-math = Book.new(
-  title: "Функциональный анализ",
-  genre: "Учебник по математике",
-  author: "У. Рудин",
-  price: 990,
-  amount: 2
-)
-math.update(genre: "Литература по мат. наукам", price: 500, amount: 1)
-products << leon
-products << igla
-products << math
+shopping_cart = []
+cart_price = 0
 
-products.each { |product| puts product }
-puts
+loop do
+  puts "Что хотите купить?"
+  puts
+  collection.to_a.each_with_index do |product, index|
+    index += 1
+    puts "#{index}. #{product}"
+  end
+  puts "0. Выход"
+  puts
+  print ">"
+  user_input = $stdin.gets.to_i until (0..collection.to_a.size).include?(user_input)
+  break if user_input.zero?
 
-movie = Movie.from_file("#{__dir__}/data/films/01.txt")
-book1 = Book.from_file("#{__dir__}/data/books/01.txt")
-book2 = Book.from_file("#{__dir__}/data/books/03.txt")
-puts movie
-puts book1
-puts book2
+  user_input -= 1
 
-puts
+  if (collection.to_a[user_input].amount - 1).negative?
+    puts "Такого товара не осталось(("
+    next
+  else
+    user_pick = collection.to_a[user_input]
+    collection.to_a[user_input].update(amount: collection.to_a[user_input].amount - 1)
+  end
 
-begin
-  product = Product.from_file("#{__dir__}/data/books/02.txt")
-rescue NotImplementedError => e
-  puts "#{e.message}: метод from_file для класса Product не реализован"
+  puts
+  puts "Вы выбрали: #{user_pick}"
+  shopping_cart << user_pick
+  puts
+  cart_price += user_pick.price
+  puts "Вы набрали товаров на сумму: #{cart_price}"
+  puts
 end
+
+puts
+puts "Вы купили:"
+puts
+
+shopping_cart.each { |product| puts product }
+
+puts
+puts "С Вас - #{cart_price}. Спасибо за покупки!"
