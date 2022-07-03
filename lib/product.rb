@@ -1,9 +1,10 @@
 class Product
-  attr_accessor :price, :amount
+  attr_accessor :price, :amount, :quantity
 
   def initialize(params)
     @price = params[:price]
     @amount = params[:amount]
+    @quantity = 0
   end
 
   def to_s

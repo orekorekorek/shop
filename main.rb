@@ -1,14 +1,14 @@
-require_relative "lib/Product"
-require_relative "lib/Film"
-require_relative "lib/Book"
-require_relative "lib/Disk"
-require_relative "lib/ProductCollection"
+require_relative "lib/product"
+require_relative "lib/film"
+require_relative "lib/book"
+require_relative "lib/disk"
+require_relative "lib/product_collection"
+require_relative "lib/cart"
 
 collection = ProductCollection.from_dir("#{__dir__}/data")
 collection.sort!(by: :title, order: :asc)
 
-shopping_cart = []
-cart_price = 0
+shopping_cart = Cart.new
 
 loop do
   puts "Что хотите купить?"
@@ -27,6 +27,7 @@ loop do
 
   if (collection.to_a[user_input].amount - 1).negative?
     puts "Такого товара не осталось(("
+    puts shopping_cart
     next
   else
     user_pick = collection.to_a[user_input]
@@ -35,10 +36,9 @@ loop do
 
   puts
   puts "Вы выбрали: #{user_pick}"
-  shopping_cart << user_pick
+  shopping_cart.add(user_pick)
   puts
-  cart_price += user_pick.price
-  puts "Вы набрали товаров на сумму: #{cart_price}"
+  puts shopping_cart
   puts
 end
 
@@ -46,7 +46,5 @@ puts
 puts "Вы купили:"
 puts
 
-shopping_cart.each { |product| puts product }
-
-puts
-puts "С Вас - #{cart_price}. Спасибо за покупки!"
+puts shopping_cart
+puts "Спасибо за покупку!"
