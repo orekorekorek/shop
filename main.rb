@@ -27,18 +27,15 @@ loop do
 
   if (collection.to_a[user_input].amount - 1).negative?
     puts "Такого товара не осталось(("
-    puts shopping_cart
+    puts "Корзина:\n#{shopping_cart}"
     next
   else
-    user_pick = collection.to_a[user_input]
+    shopping_cart.add(collection.to_a[user_input])
     collection.to_a[user_input].update(amount: collection.to_a[user_input].amount - 1)
   end
 
   puts
-  puts "Вы выбрали: #{user_pick}"
-  shopping_cart.add(user_pick)
-  puts
-  puts shopping_cart
+  puts "Корзина:\n#{shopping_cart}"
   puts
 end
 
