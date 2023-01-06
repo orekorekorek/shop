@@ -15,7 +15,7 @@ class Cart
   end
 
   def to_s
-    string = ""
+    string = ''
     @products.each do |product|
       string += "(#{product.quantity}) #{product.title} -- #{product.price * product.quantity} руб.\n"
     end

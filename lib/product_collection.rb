@@ -1,8 +1,8 @@
 class ProductCollection
   PRODUCT_TYPES = [
-    { dir: "films", class: Film },
-    { dir: "books", class: Book },
-    { dir: "disks", class: Disk }
+    { dir: 'films', class: Film },
+    { dir: 'books', class: Book },
+    { dir: 'disks', class: Disk }
   ].freeze
 
   attr_reader :products
